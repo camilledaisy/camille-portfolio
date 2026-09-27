@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Icon from '../components/Icon.astro';
+import AsciiTrail from '../components/AsciiTrail.astro';
 import { Image } from 'astro:assets';
 import closingImage from '../assets/closing-flowers.jpg';
 
@@ -155,7 +156,11 @@ const steps = ['Ask', 'Observe', 'Understand', 'Design', 'Test', 'Learn'];
 
   <!-- Closing image -->
   <div class="container">
-    <Image class="feature-image" src={closingImage} alt="" loading="lazy" />
+    <div class="feature">
+      <AsciiTrail>
+        <Image class="feature-image" src={closingImage} alt="" loading="lazy" />
+      </AsciiTrail>
+    </div>
   </div>
 
   <!-- Contact -->
@@ -373,8 +378,10 @@ const steps = ['Ask', 'Observe', 'Understand', 'Design', 'Test', 'Learn'];
   }
 
   /* Closing image */
-  .feature-image {
+  .feature {
     margin-top: 80px;
+  }
+  .feature-image {
     width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;
