@@ -46,6 +46,11 @@ npm run dev      # live preview at http://localhost:4321
 npm run build    # production build into dist/
 ```
 
+## Deploy (Netlify)
+
+`netlify.toml` tells Netlify how to build the site, so no local setup is needed.
+Netlify runs `npm run build` and publishes the `dist/` folder on every push.
+
 ## Plan
 
 1. Fill in `screenshots/` and `assets/`, then the design notes above.
