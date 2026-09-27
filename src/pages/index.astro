@@ -170,8 +170,27 @@ const steps = ['Ask', 'Observe', 'Understand', 'Design', 'Test', 'Learn'];
     <p class="contact-intro">
       I’m always interested in learning,<br />collaborating, and talking about UX Research.
     </p>
-    <a class="contact-link" href="mailto:"><Icon name="Mail" size={17} class="mail" /> Email Me →</a>
-    <a class="contact-link" href="#">LinkedIn →</a>
+    <a class="contact-link" href="mailto:"><Icon name="Mail" size={17} class="contact-icon" /> Email Me</a>
+    <a class="contact-link" href="#">
+      <!-- LinkedIn outline icon drawn to match the Lucide mail icon -->
+      <svg
+        class="contact-icon"
+        aria-hidden="true"
+        width="17"
+        height="17"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" />
+        <rect width="4" height="12" x="2" y="9" />
+        <circle cx="4" cy="4" r="2" />
+      </svg>
+      LinkedIn
+    </a>
   </section>
 </Base>
 
@@ -441,7 +460,7 @@ const steps = ['Ask', 'Observe', 'Understand', 'Design', 'Test', 'Learn'];
   .contact-link:hover {
     color: var(--green);
   }
-  .contact-link :global(.mail) {
+  .contact-link :global(.contact-icon) {
     color: var(--green);
   }
 
