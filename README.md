@@ -16,12 +16,25 @@ assets/
 
 Name each page's screenshots the same way in `desktop/` and `mobile/` so they pair up.
 
-## Design notes (fill in before building)
+## Design notes
 
-- **Fonts:** _[names + weights, and whether they're Google Fonts or self-hosted files]_
-- **Colours:** _[hex codes: background, text, accent, etc.]_
-- **Hover effects:** _[e.g. cards lift 4px with shadow, links underline on hover]_
-- **Pages:** _[list every page]_
+Colours sampled from the desktop screenshots (confirm against Framer):
+
+| Role | Hex |
+|---|---|
+| Page background | `#F4F1EC` |
+| Card footer / process section | `#E6E1D8` |
+| Light tile / accessibility card | `#EDE7DD` / `#E9E5DE` |
+| Text / primary button / about section | `#23211E` |
+| Green (Communimate, accent labels) | `#3C5D58` |
+| Sage tile | `#AEC5B7` |
+| Mustard (tiles, User Research card) | `#CEB37E` |
+| Brown (10,000 Floors) | `#775E49` |
+| Slate blue (Behaviour, Inclusive Design) | `#4F5A79` |
+
+- **Fonts:** _[to confirm: a high-contrast condensed display serif for headings; a sans (looks like Inter) for body]_
+- **Hover effects:** _[to describe]_
+- **Pages:** Home (Work, About, Research interests, Research process, Contact, Footer); _[Resume? case study pages?]_
 
 ## Plan
 
