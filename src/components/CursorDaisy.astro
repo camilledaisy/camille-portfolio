@@ -1,0 +1,103 @@
+---
+// A small daisy that trails the cursor, spins as it moves and grows over links.
+// Only shown for mouse/trackpad users who haven't asked for reduced motion.
+const petals = Array.from({ length: 12 }, (_, i) => i * 30);
+---
+
+<div class="cursor-daisy" aria-hidden="true">
+  <svg viewBox="-20 -20 40 40" width="30" height="30">
+    <g class="petals">
+      {
+        petals.map((angle) => (
+          <ellipse cx="0" cy="-10.5" rx="3.6" ry="8" transform={`rotate(${angle})`} />
+        ))
+      }
+    </g>
+    <circle class="center" r="5.2" />
+    <circle class="center-shade" r="2.6" />
+  </svg>
+</div>
+
+<style>
+  .cursor-daisy {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    will-change: transform;
+  }
+  .cursor-daisy.visible {
+    opacity: 1;
+  }
+  svg {
+    display: block;
+    overflow: visible;
+    filter: drop-shadow(0 1px 1.5px rgba(35, 33, 30, 0.18));
+  }
+  .petals ellipse {
+    fill: #fff;
+    stroke: rgba(35, 33, 30, 0.22);
+    stroke-width: 0.6;
+  }
+  .center {
+    fill: #e8b53d;
+  }
+  .center-shade {
+    fill: #c9922a;
+    opacity: 0.55;
+  }
+</style>
+
+<script>
+  const FOLLOW = 0.18; // how quickly the daisy catches up to the cursor (0–1)
+  const OFFSET = 16; // sits just below-right of the pointer so it never covers it
+
+  const daisy = document.querySelector<HTMLElement>('.cursor-daisy');
+  const fineMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (daisy && fineMouse && !reducedMotion) {
+    let targetX = 0;
+    let targetY = 0;
+    let x = 0;
+    let y = 0;
+    let rotation = 0;
+    let scale = 1;
+    let targetScale = 1;
+    let started = false;
+
+    window.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      targetX = e.clientX + OFFSET;
+      targetY = e.clientY + OFFSET;
+      if (!started) {
+        // Appear right at the cursor instead of flying in from the corner
+        x = targetX;
+        y = targetY;
+        started = true;
+        requestAnimationFrame(tick);
+      }
+      daisy.classList.add('visible');
+      const overLink = (e.target as Element | null)?.closest('a, button');
+      targetScale = overLink ? 1.45 : 1;
+    });
+
+    document.documentElement.addEventListener('mouseleave', () => daisy.classList.remove('visible'));
+    window.addEventListener('blur', () => daisy.classList.remove('visible'));
+
+    function tick() {
+      const dx = targetX - x;
+      const dy = targetY - y;
+      x += dx * FOLLOW;
+      y += dy * FOLLOW;
+      // Roll like a wheel: spin in proportion to distance travelled, direction from horizontal motion
+      rotation += (dx * FOLLOW) * 2.2 + Math.abs(dy * FOLLOW) * 0.6;
+      scale += (targetScale - scale) * 0.2;
+      daisy!.style.transform = `translate3d(${x - 15}px, ${y - 15}px, 0) rotate(${rotation}deg) scale(${scale})`;
+      requestAnimationFrame(tick);
+    }
+  }
+</script>

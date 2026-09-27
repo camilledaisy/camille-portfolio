@@ -5,6 +5,7 @@ import '@fontsource-variable/inter';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CursorDaisy from '../components/CursorDaisy.astro';
 
 interface Props {
   title?: string;
@@ -31,5 +32,6 @@ const {
       <slot />
     </main>
     <Footer />
+    <CursorDaisy />
   </body>
 </html>
