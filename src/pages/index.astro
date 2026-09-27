@@ -63,7 +63,14 @@ const interests = [
   },
 ] as const;
 
-const steps = ['Ask', 'Observe', 'Understand', 'Design', 'Test', 'Learn'];
+const steps = [
+  { title: 'Ask', question: 'What don’t we understand yet?' },
+  { title: 'Observe', question: 'What are people actually doing?' },
+  { title: 'Make sense', question: 'What patterns keep appearing?' },
+  { title: 'Explore', question: 'What might address those needs?' },
+  { title: 'Test', question: 'Does it actually work?' },
+  { title: 'Learn', question: 'What did we get wrong?' },
+];
 ---
 
 <Base>
@@ -142,10 +149,17 @@ const steps = ['Ask', 'Observe', 'Understand', 'Design', 'Test', 'Learn'];
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">04 — Research Process</p>
-        <h2>How learning becomes direction</h2>
+        <h2>I start with questions, not solutions.</h2>
       </div>
       <ol class="steps">
-        {steps.map((s) => <li>{s}</li>)}
+        {
+          steps.map((step) => (
+            <li>
+              <span class="step-title">{step.title}</span>
+              <span class="step-question">{step.question}</span>
+            </li>
+          ))
+        }
       </ol>
       <p class="process-note">
         I’m interested in research that doesn’t stop at collecting data. The goal is to understand people
@@ -403,16 +417,28 @@ const steps = ['Ask', 'Observe', 'Understand', 'Design', 'Test', 'Learn'];
     white-space: nowrap;
   }
   .steps {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 24px;
     list-style: none;
     margin: 0;
-    padding: 18px 0;
+    padding: 22px 0 24px;
     border-top: 1px solid var(--ink);
     border-bottom: 1px solid var(--ink);
+  }
+  .step-title {
+    display: block;
     font-family: var(--font-display);
     font-size: clamp(26px, 3.2vw, 34px);
     line-height: 1.1;
+  }
+  .step-question {
+    display: block;
+    margin-top: 10px;
+    max-width: 150px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--text-muted);
   }
   .process-note {
     margin: 36px 0 0;
@@ -512,9 +538,8 @@ const steps = ['Ask', 'Observe', 'Understand', 'Design', 'Test', 'Learn'];
       padding: 64px 0 72px;
     }
     .steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px 16px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px 20px;
     }
     .contact {
       padding-top: 96px;
