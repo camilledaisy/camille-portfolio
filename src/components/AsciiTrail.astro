@@ -1,6 +1,6 @@
 ---
-// Wraps an image with a canvas that draws a fading trail of ASCII characters
-// behind the cursor. Characters are chosen from the image's brightness.
+// Wraps an image with a canvas that leaves a trail of small dithered dots
+// behind the cursor. Dots thin out randomly as the trail fades.
 interface Props {
   class?: string;
 }
@@ -17,7 +17,6 @@ const { class: className } = Astro.props;
   .ascii-trail {
     position: relative;
     overflow: hidden;
-    cursor: crosshair;
     touch-action: pan-y;
   }
   .ascii-trail :global(img) {
@@ -33,28 +32,28 @@ const { class: className } = Astro.props;
 </style>
 
 <script>
-  const CELL = 11; // grid cell size in CSS px
-  const RADIUS = 3.2; // brush radius in cells
-  const DECAY = 0.965; // how fast the trail fades each frame
-  const RAMP = '.:-=+*#%@'; // light to dark
-  const BG = '244, 241, 236'; // --bg
-  const INK = '35, 33, 30'; // --ink
+  const CELL = 6; // grid spacing in CSS px
+  const DOT = 2; // dot size in CSS px
+  const RADIUS = 5; // brush radius in cells
+  const DECAY = 0.984; // how fast the trail fades each frame (~2s)
+  const FLICKER = 0.04; // share of dots that re-roll their threshold each frame
+  const COLOR = 'rgba(255, 255, 255, 0.95)';
 
   function setup(root: HTMLElement) {
-    const img = root.querySelector('img');
     const canvas = root.querySelector('canvas');
-    if (!img || !canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    const ctx = canvas?.getContext('2d');
+    if (!canvas || !ctx) return;
 
     let cols = 0;
     let rows = 0;
-    let brightness = new Float32Array(0);
     let heat = new Float32Array(0);
+    // Each dot shows once the trail's heat passes its own random threshold,
+    // which gives the dithered, dissolving edge as the trail fades.
+    let threshold = new Float32Array(0);
     let last: { x: number; y: number } | null = null;
     let running = false;
 
-    function sampleImage() {
+    function resize() {
       const rect = root.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
       canvas!.width = Math.round(rect.width * dpr);
@@ -64,42 +63,22 @@ const { class: className } = Astro.props;
       cols = Math.ceil(rect.width / CELL);
       rows = Math.ceil(rect.height / CELL);
       heat = new Float32Array(cols * rows);
-      brightness = new Float32Array(cols * rows);
-
-      // Downsample the image to one pixel per cell to read brightness
-      const off = document.createElement('canvas');
-      off.width = cols;
-      off.height = rows;
-      const octx = off.getContext('2d', { willReadFrequently: true });
-      if (!octx || !img!.naturalWidth) return;
-      octx.drawImage(img!, 0, 0, cols, rows);
-      const data = octx.getImageData(0, 0, cols, rows).data;
-      let min = 1;
-      let max = 0;
-      for (let i = 0; i < cols * rows; i++) {
-        const r = data[i * 4];
-        const g = data[i * 4 + 1];
-        const b = data[i * 4 + 2];
-        const v = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-        brightness[i] = v;
-        min = Math.min(min, v);
-        max = Math.max(max, v);
-      }
-      // Stretch to the image's own range so soft photos still use every character
-      const range = max - min || 1;
-      for (let i = 0; i < brightness.length; i++) brightness[i] = (brightness[i] - min) / range;
+      threshold = new Float32Array(cols * rows);
+      for (let i = 0; i < threshold.length; i++) threshold[i] = 0.12 + Math.random() * 0.88;
     }
 
     function paint(cx: number, cy: number) {
       const r = Math.ceil(RADIUS);
-      for (let y = cy - r; y <= cy + r; y++) {
+      const ix = Math.round(cx);
+      const iy = Math.round(cy);
+      for (let y = iy - r; y <= iy + r; y++) {
         if (y < 0 || y >= rows) continue;
-        for (let x = cx - r; x <= cx + r; x++) {
+        for (let x = ix - r; x <= ix + r; x++) {
           if (x < 0 || x >= cols) continue;
           const d = Math.hypot(x - cx, y - cy) / RADIUS;
           if (d > 1) continue;
           const i = y * cols + x;
-          heat[i] = Math.min(1, heat[i] + (1 - d) * 0.8);
+          heat[i] = Math.max(heat[i], 0.85 * (1 - d * d * d));
         }
       }
     }
@@ -113,43 +92,32 @@ const { class: className } = Astro.props;
       const steps = Math.max(1, Math.ceil(Math.hypot(x - from.x, y - from.y)));
       for (let s = 1; s <= steps; s++) {
         const t = s / steps;
-        paint(Math.round(from.x + (x - from.x) * t), Math.round(from.y + (y - from.y) * t));
+        paint(from.x + (x - from.x) * t, from.y + (y - from.y) * t);
       }
       last = { x, y };
       start();
     }
 
-    function frame(time: number) {
-      const w = canvas!.width;
-      const h = canvas!.height;
-      ctx!.clearRect(0, 0, w, h);
-      ctx!.font = `${CELL}px ui-monospace, SFMono-Regular, Menlo, monospace`;
-      ctx!.textAlign = 'center';
-      ctx!.textBaseline = 'middle';
+    function frame() {
+      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+      ctx!.fillStyle = COLOR;
+      const offset = (CELL - DOT) / 2;
 
       let active = false;
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < cols; x++) {
-          const i = y * cols + x;
-          const v = heat[i];
-          if (v < 0.02) {
-            heat[i] = 0;
-            continue;
-          }
-          active = true;
-          heat[i] = v * DECAY;
-
-          const px = x * CELL;
-          const py = y * CELL;
-          ctx!.fillStyle = `rgba(${BG}, ${Math.min(1, v * 1.4) * 0.92})`;
-          ctx!.fillRect(px, py, CELL, CELL);
-
-          // Darker image areas get denser characters; a slow wave makes them shimmer
-          const wave = Math.sin(time * 0.004 + x * 0.35 + y * 0.25) * 0.12;
-          const level = Math.min(0.999, Math.max(0, 1 - brightness[i] + wave));
-          const ch = RAMP[Math.floor(level * RAMP.length)];
-          ctx!.fillStyle = `rgba(${INK}, ${Math.min(1, v * 1.6)})`;
-          ctx!.fillText(ch, px + CELL / 2, py + CELL / 2);
+      for (let i = 0; i < heat.length; i++) {
+        const v = heat[i];
+        if (v === 0) continue;
+        if (v < 0.01) {
+          heat[i] = 0;
+          continue;
+        }
+        active = true;
+        heat[i] = v * DECAY;
+        if (Math.random() < FLICKER) threshold[i] = 0.12 + Math.random() * 0.88;
+        if (v > threshold[i]) {
+          const x = (i % cols) * CELL + offset;
+          const y = Math.floor(i / cols) * CELL + offset;
+          ctx!.fillRect(x, y, DOT, DOT);
         }
       }
 
@@ -166,15 +134,10 @@ const { class: className } = Astro.props;
       requestAnimationFrame(frame);
     }
 
-    function init() {
-      sampleImage();
-      root.addEventListener('pointermove', onMove);
-      root.addEventListener('pointerleave', () => (last = null));
-      new ResizeObserver(sampleImage).observe(root);
-    }
-
-    if (img.complete && img.naturalWidth) init();
-    else img.addEventListener('load', init, { once: true });
+    resize();
+    new ResizeObserver(resize).observe(root);
+    root.addEventListener('pointermove', onMove);
+    root.addEventListener('pointerleave', () => (last = null));
   }
 
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
