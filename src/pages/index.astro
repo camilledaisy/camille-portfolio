@@ -168,13 +168,11 @@ const steps = [
     </div>
   </section>
 
-  <!-- Closing image -->
-  <div class="container">
-    <div class="feature">
-      <AsciiTrail>
-        <Image class="feature-image" src={closingImage} alt="" loading="lazy" />
-      </AsciiTrail>
-    </div>
+  <!-- Closing image, full width -->
+  <div class="feature">
+    <AsciiTrail>
+      <Image class="feature-image" src={closingImage} alt="" loading="lazy" />
+    </AsciiTrail>
   </div>
 
   <!-- Contact -->
@@ -456,6 +454,7 @@ const steps = [
     width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;
+    max-height: 85vh;
     object-fit: cover;
   }
 
