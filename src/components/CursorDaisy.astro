@@ -1,20 +1,15 @@
 ---
 // A small daisy that trails the cursor, spins as it moves and grows over links.
 // Only shown for mouse/trackpad users who haven't asked for reduced motion.
-const petals = Array.from({ length: 12 }, (_, i) => i * 30);
+const petals = Array.from({ length: 5 }, (_, i) => i * 72);
 ---
 
 <div class="cursor-daisy" aria-hidden="true">
-  <svg viewBox="-20 -20 40 40" width="30" height="30">
+  <svg viewBox="-13 -13 26 26" width="30" height="30">
     <g class="petals">
-      {
-        petals.map((angle) => (
-          <ellipse cx="0" cy="-10.5" rx="3.6" ry="8" transform={`rotate(${angle})`} />
-        ))
-      }
+      {petals.map((angle) => <circle cx="0" cy="-6.6" r="5.6" transform={`rotate(${angle})`} />)}
     </g>
-    <circle class="center" r="5.2" />
-    <circle class="center-shade" r="2.6" />
+    <circle class="center" r="4" />
   </svg>
 </div>
 
@@ -35,19 +30,12 @@ const petals = Array.from({ length: 12 }, (_, i) => i * 30);
   svg {
     display: block;
     overflow: visible;
-    filter: drop-shadow(0 1px 1.5px rgba(35, 33, 30, 0.18));
   }
-  .petals ellipse {
-    fill: #fff;
-    stroke: rgba(35, 33, 30, 0.22);
-    stroke-width: 0.6;
+  .petals circle {
+    fill: var(--green);
   }
   .center {
-    fill: #e8b53d;
-  }
-  .center-shade {
-    fill: #c9922a;
-    opacity: 0.55;
+    fill: var(--mustard);
   }
 </style>
 
