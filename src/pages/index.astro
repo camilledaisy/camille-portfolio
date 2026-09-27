@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Icon from '../components/Icon.astro';
+import { Image } from 'astro:assets';
+import closingImage from '../assets/closing-flowers.jpg';
 
 const projects = [
   {
@@ -151,9 +153,9 @@ const steps = ['Ask', 'Observe', 'Understand', 'Design', 'Test', 'Learn'];
     </div>
   </section>
 
-  <!-- Feature image (placeholder until the Framer export is added) -->
+  <!-- Closing image -->
   <div class="container">
-    <div class="feature-image" role="img" aria-label="Soft blurred light and shadow"></div>
+    <Image class="feature-image" src={closingImage} alt="" loading="lazy" />
   </div>
 
   <!-- Contact -->
@@ -370,18 +372,13 @@ const steps = ['Ask', 'Observe', 'Understand', 'Design', 'Test', 'Learn'];
     color: var(--text-muted);
   }
 
-  /* Feature image placeholder: blurred light and shadow */
+  /* Closing image */
   .feature-image {
     margin-top: 80px;
-    aspect-ratio: 1024 / 576;
-    background:
-      radial-gradient(ellipse 22% 30% at 26% 62%, #f2f2cb 0 45%, transparent 100%),
-      radial-gradient(ellipse 18% 26% at 36% 82%, #f2f2cb 0 40%, transparent 100%),
-      radial-gradient(ellipse 22% 28% at 70% 22%, #f2f2cb 0 45%, transparent 100%),
-      radial-gradient(ellipse 22% 30% at 82% 58%, #f2f2cb 0 45%, transparent 100%),
-      #b9b9a8;
-    filter: blur(8px);
-    clip-path: inset(0);
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
   }
 
   /* Contact */
