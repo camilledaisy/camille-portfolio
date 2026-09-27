@@ -1,0 +1,474 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Icon from '../components/Icon.astro';
+
+const projects = [
+  {
+    number: '01',
+    label: 'Communicate / AAC',
+    title: 'Communimate',
+    tags: ['UX Research', 'Accessibility', 'Product Design'],
+    description:
+      'A communication-support concept exploring how AAC interfaces can become more approachable, customizable, and accessible for non-speaking and minimally speaking users.',
+    color: 'var(--green)',
+  },
+  {
+    number: '02',
+    label: 'Floor Navigation / 10,000',
+    title: '10,000 Floors',
+    tags: ['UX Design', 'Interaction Design', 'Accessibility'],
+    description:
+      'An exploration of alternative elevator interfaces designed to rethink how people navigate large buildings and interact with floor-selection systems.',
+    color: 'var(--brown)',
+  },
+  {
+    number: '03',
+    label: 'Behaviour / Patterns',
+    title: 'Human Behaviour Study',
+    tags: ['UX Research', 'Psychology', 'User Behaviour'],
+    description:
+      'A research-focused exploration of how people make decisions, interpret information, and interact with digital experiences.',
+    color: 'var(--slate)',
+  },
+];
+
+const interests = [
+  {
+    icon: 'Accessibility',
+    title: 'Accessibility',
+    text: 'Designing experiences that account for different abilities and ways of interacting.',
+    theme: 'light',
+  },
+  {
+    icon: 'Brain',
+    title: 'Human Behaviour',
+    text: 'Understanding the motivations, habits, and decisions behind user behaviour.',
+    theme: 'green',
+  },
+  {
+    icon: 'Sparkles',
+    title: 'Inclusive Design',
+    text: 'Exploring how products can work for people who are often overlooked during the design process.',
+    theme: 'slate',
+  },
+  {
+    icon: 'Search',
+    title: 'User Research',
+    text: 'Turning observations and conversations into meaningful insights.',
+    theme: 'mustard',
+  },
+] as const;
+
+const steps = ['Ask', 'Observe', 'Understand', 'Design', 'Test', 'Learn'];
+---
+
+<Base>
+  <!-- Hero -->
+  <section class="hero container">
+    <p class="status"><span class="dot" aria-hidden="true"></span>Currently exploring UX Research opportunities</p>
+    <h1>I’m interested in understanding why people do what they do.</h1>
+    <div class="hero-bottom">
+      <p class="intro">
+        UX Researcher in the making, with a background in Applied Psychology and Human Behaviour. I’m
+        interested in uncovering the needs, behaviours, and motivations behind the experiences we design.
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#work">View My Work <Icon name="ArrowRight" size={14} /></a>
+        <a class="btn btn-secondary" href="#about">About Me</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 Selected work -->
+  <section id="work" class="work container">
+    <div class="section-head">
+      <p class="eyebrow">01 — Selected Work</p>
+      <h2>Research as a way of paying closer attention.</h2>
+    </div>
+    <div class="projects">
+      {projects.map((p) => <ProjectCard {...p} />)}
+    </div>
+  </section>
+
+  <!-- 02 About -->
+  <section id="about" class="about">
+    <div class="container about-inner">
+      <p class="eyebrow">02 — About</p>
+      <div class="about-body">
+        <h2>A little about me.</h2>
+        <p>
+          Applied Psychology graduate interested in the space where human behaviour and technology meet. My
+          background has taught me to look beyond what people do and ask why they do it — what motivates
+          them, what frustrates them, and what they actually need.
+        </p>
+        <p>
+          I’m currently building my skills in UX Research, with a particular interest in accessibility,
+          inclusive design, and understanding how people interact with products in the real world.
+        </p>
+        <ul class="pills">
+          <li>Human behaviour</li>
+          <li>Accessibility</li>
+          <li>Inclusive research</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 Research interests -->
+  <section class="interests container">
+    <div class="section-head">
+      <p class="eyebrow">03 — Research Interests</p>
+      <h2>Things I’m curious about</h2>
+    </div>
+    <div class="interest-grid">
+      {
+        interests.map((item) => (
+          <article class:list={['interest', item.theme]}>
+            <Icon name={item.icon} size={20} />
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 04 Research process -->
+  <section class="process">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">04 — Research Process</p>
+        <h2>How learning becomes direction</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s) => <li>{s}</li>)}
+      </ol>
+      <p class="process-note">
+        I’m interested in research that doesn’t stop at collecting data. The goal is to understand people
+        well enough to make better decisions.
+      </p>
+    </div>
+  </section>
+
+  <!-- Feature image (placeholder until the Framer export is added) -->
+  <div class="container">
+    <div class="feature-image" role="img" aria-label="Soft blurred light and shadow"></div>
+  </div>
+
+  <!-- Contact -->
+  <section id="contact" class="contact container">
+    <p class="eyebrow">03 — Let’s Connect</p>
+    <h2>Have something worth investigating?</h2>
+    <p class="contact-intro">
+      I’m always interested in learning,<br />collaborating, and talking about UX Research.
+    </p>
+    <a class="contact-link" href="mailto:"><Icon name="Mail" size={17} class="mail" /> Email Me →</a>
+    <a class="contact-link" href="#">LinkedIn →</a>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-top: 104px;
+    padding-bottom: 170px;
+  }
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 30px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--green);
+  }
+  .dot {
+    width: 9px;
+    height: 9px;
+    border: 1.5px solid var(--green);
+    border-radius: 50%;
+  }
+  h1 {
+    font-size: clamp(44px, 7.4vw, 76px);
+    line-height: 0.92;
+    max-width: 830px;
+  }
+  .hero-bottom {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    margin-top: 44px;
+  }
+  .intro {
+    margin: 0;
+    max-width: 510px;
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+  .actions {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Shared section heading: label on the left, title on the right */
+  .section-head {
+    display: grid;
+    grid-template-columns: minmax(0, 450px) 1fr;
+    align-items: end;
+    gap: 24px;
+    margin-bottom: 38px;
+  }
+  .section-head .eyebrow {
+    padding-bottom: 10px;
+  }
+  .section-head h2 {
+    font-size: clamp(34px, 4.4vw, 46px);
+    line-height: 1;
+  }
+
+  /* Work */
+  .work {
+    padding-bottom: 140px;
+  }
+  .work .section-head h2 {
+    max-width: 400px;
+  }
+  .projects {
+    display: grid;
+    gap: 40px;
+  }
+
+  /* About */
+  .about {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 90px 0 88px;
+  }
+  .about-inner {
+    display: grid;
+    grid-template-columns: 234px 1fr;
+  }
+  .about .eyebrow {
+    color: var(--bg);
+    padding-top: 8px;
+  }
+  .about h2 {
+    font-size: clamp(38px, 4.6vw, 50px);
+    margin-bottom: 30px;
+  }
+  .about-body {
+    max-width: 600px;
+  }
+  .about-body p {
+    font-size: 15.5px;
+    line-height: 1.68;
+    margin: 0 0 24px;
+    color: #e9e5de;
+  }
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    list-style: none;
+    padding: 0;
+    margin: 30px 0 0;
+  }
+  .pills li {
+    border: 1px solid rgba(244, 241, 236, 0.6);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  /* Interests */
+  .interests {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+  .interests .section-head {
+    margin-bottom: 36px;
+  }
+  .interest-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--line);
+  }
+  .interest {
+    padding: 26px 26px 30px;
+    min-height: 190px;
+    transition: filter 0.25s ease;
+  }
+  .interest:hover {
+    filter: brightness(1.04);
+  }
+  .interest h3 {
+    font-size: 30px;
+    margin: 20px 0 16px;
+  }
+  .interest p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+  .interest.light {
+    background: var(--tile);
+    color: var(--text);
+  }
+  .interest.light p {
+    color: var(--text-muted);
+  }
+  .interest.light .icon {
+    color: var(--green);
+  }
+  .interest.green {
+    background: var(--green);
+    color: #fff;
+  }
+  .interest.slate {
+    background: var(--slate);
+    color: #fff;
+  }
+  .interest.mustard {
+    background: var(--mustard);
+    color: var(--text);
+  }
+  .interest.mustard p {
+    color: var(--text-body);
+  }
+
+  /* Process */
+  .process {
+    background: var(--surface);
+    padding: 88px 0 110px;
+  }
+  .process .section-head {
+    margin-bottom: 30px;
+  }
+  .process .section-head h2 {
+    text-align: right;
+    white-space: nowrap;
+  }
+  .steps {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 18px 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3.2vw, 34px);
+    line-height: 1.1;
+  }
+  .process-note {
+    margin: 36px 0 0;
+    max-width: 540px;
+    font-size: 15.5px;
+    line-height: 1.68;
+    color: var(--text-muted);
+  }
+
+  /* Feature image placeholder: blurred light and shadow */
+  .feature-image {
+    margin-top: 80px;
+    aspect-ratio: 1024 / 576;
+    background:
+      radial-gradient(ellipse 22% 30% at 26% 62%, #f2f2cb 0 45%, transparent 100%),
+      radial-gradient(ellipse 18% 26% at 36% 82%, #f2f2cb 0 40%, transparent 100%),
+      radial-gradient(ellipse 22% 28% at 70% 22%, #f2f2cb 0 45%, transparent 100%),
+      radial-gradient(ellipse 22% 30% at 82% 58%, #f2f2cb 0 45%, transparent 100%),
+      #b9b9a8;
+    filter: blur(8px);
+    clip-path: inset(0);
+  }
+
+  /* Contact */
+  .contact {
+    padding-top: 180px;
+    padding-bottom: 50px;
+  }
+  .contact h2 {
+    font-size: clamp(38px, 5vw, 52px);
+    margin: 18px 0 30px;
+  }
+  .contact-intro {
+    margin: 0 0 40px;
+    color: var(--text-muted);
+    font-size: 15px;
+  }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 44px;
+    transition: color 0.2s ease;
+  }
+  .contact-link:hover {
+    color: var(--green);
+  }
+  .contact-link :global(.mail) {
+    color: var(--green);
+  }
+
+  /* Mobile */
+  @media (max-width: 860px) {
+    .hero-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 32px;
+    }
+    .about-inner {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+  @media (max-width: 720px) {
+    .hero {
+      padding-top: 64px;
+      padding-bottom: 96px;
+    }
+    .section-head {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .section-head .eyebrow {
+      padding-bottom: 0;
+    }
+    .process .section-head h2 {
+      text-align: left;
+      white-space: normal;
+    }
+    .work {
+      padding-bottom: 96px;
+    }
+    .projects {
+      gap: 28px;
+    }
+    .about {
+      padding: 64px 0;
+    }
+    .interests {
+      padding-top: 64px;
+      padding-bottom: 64px;
+    }
+    .interest-grid {
+      grid-template-columns: 1fr;
+    }
+    .process {
+      padding: 64px 0 72px;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px 16px;
+    }
+    .contact {
+      padding-top: 96px;
+    }
+  }
+</style>

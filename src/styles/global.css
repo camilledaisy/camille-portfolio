@@ -1,0 +1,122 @@
+:root {
+  /* Colours sampled from the Framer screenshots */
+  --bg: #f4f1ec;
+  --surface: #e6e1d8;
+  --tile: #ede7dd;
+  --ink: #23211e;
+  --text: #23211e;
+  --text-body: #43413f;
+  --text-muted: #6f6b66;
+  --line: #d9d3c9;
+  --green: #3c5d58;
+  --sage: #aec5b7;
+  --mustard: #ceb37e;
+  --brown: #775e49;
+  --slate: #4f5a79;
+
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
+
+  --container: 1024px;
+  --gutter: 46px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* "01 — SELECTED WORK" style labels */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--ink);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+.btn-primary:hover {
+  background: var(--green);
+  border-color: var(--green);
+}
+.btn-secondary:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.arrow-link .icon {
+  transition: transform 0.2s ease;
+}
+.arrow-link:hover .icon {
+  transform: translateX(3px);
+}
+
+@media (max-width: 720px) {
+  :root {
+    --gutter: 20px;
+  }
+}

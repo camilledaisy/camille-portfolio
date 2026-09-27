@@ -1,0 +1,146 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  number: string;
+  label: string;
+  title: string;
+  tags: string[];
+  description: string;
+  color: string;
+  href?: string;
+}
+
+const { number, label, title, tags, description, color, href = '#' } = Astro.props;
+const tiles = ['tile', 'sage', 'tile', 'mustard', 'sage', 'tile', 'mustard', 'tile'];
+---
+
+<a class="card" href={href}>
+  <div class="visual" style={`--card-color: ${color}`}>
+    <div class="visual-top">
+      <span class="label">{label}</span>
+      <Icon name="Accessibility" size={18} />
+    </div>
+    <div class="tiles" aria-hidden="true">
+      {tiles.map((t) => <span class={t} />)}
+    </div>
+  </div>
+  <div class="info">
+    <div class="text">
+      <p class="eyebrow number">Project {number}</p>
+      <h3>{title}</h3>
+      <p class="tags">{tags.join(' · ')}</p>
+      <p class="desc">{description}</p>
+    </div>
+    <span class="arrow-link">View Case Study <Icon name="ArrowRight" size={14} /></span>
+  </div>
+</a>
+
+<style>
+  .card {
+    display: block;
+    border: 1px solid var(--line);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px -18px rgba(35, 33, 30, 0.35);
+  }
+  .visual {
+    background: var(--card-color);
+    color: #fff;
+    padding: 26px 25px 54px;
+  }
+  .visual-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 68px;
+  }
+  .label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px 9px;
+  }
+  .tiles span {
+    height: 64px;
+    border-radius: 2px;
+    transition: transform 0.4s ease;
+  }
+  .card:hover .tiles span:nth-child(odd) {
+    transform: translateY(-3px);
+  }
+  .tile {
+    background: var(--tile);
+  }
+  .sage {
+    background: var(--sage);
+  }
+  .mustard {
+    background: var(--mustard);
+  }
+  .info {
+    background: var(--surface);
+    padding: 28px 25px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .number {
+    color: var(--text-body);
+    font-size: 10px;
+  }
+  h3 {
+    font-size: 34px;
+    margin: 8px 0 10px;
+  }
+  .tags {
+    margin: 0 0 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--green);
+  }
+  .desc {
+    margin: 0;
+    max-width: 500px;
+    font-size: 15px;
+    color: var(--text-muted);
+  }
+  .arrow-link {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  @media (max-width: 720px) {
+    .visual {
+      padding: 20px 18px 32px;
+    }
+    .visual-top {
+      margin-bottom: 36px;
+    }
+    .tiles {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .tiles span {
+      height: 40px;
+    }
+    .tiles span:nth-child(n + 5) {
+      display: none;
+    }
+    .info {
+      flex-direction: column;
+      padding: 22px 18px 24px;
+    }
+    h3 {
+      font-size: 28px;
+    }
+  }
+</style>

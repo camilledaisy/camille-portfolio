@@ -36,6 +36,16 @@ Colours sampled from the desktop screenshots (confirm against Framer):
 - **Hover effects:** _[to describe]_
 - **Pages:** Home (Work, About, Research interests, Research process, Contact, Footer); _[Resume? case study pages?]_
 
+## Run it locally
+
+Needs [Node.js](https://nodejs.org) 22+.
+
+```
+npm install
+npm run dev      # live preview at http://localhost:4321
+npm run build    # production build into dist/
+```
+
 ## Plan
 
 1. Fill in `screenshots/` and `assets/`, then the design notes above.
